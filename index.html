@@ -1,0 +1,53 @@
+<script src="shri-async-hw.js"></script>
+
+<script>
+
+  const {
+    AsyncArray,
+    add,
+    mod,
+    less
+  } = Homework;
+
+  function promisify(f) {
+    return (...args) => {
+      return new Promise((resolve, reject) => {
+        f(...args, resolve);
+      });
+    }
+  }
+
+  const promiseAdd = promisify(add);
+  const promiseMod = promisify(mod);
+  const promiseLess = promisify(less);
+  const promiseLength = array => {
+    return new Promise((resolve, reject) => {
+      array.length(resolve);
+    });
+  }
+
+  const promiseGet = (array, index) => {
+    return new Promise((resolve, reject) => {
+      return array.get(index, resolve);
+    });
+  }
+
+  async function sumOddAsync(array, callback) {
+    let sum = 0;
+    let index = 0;
+    const lengthArray = await promiseLength(array);
+
+    while (await promiseLess(index, lengthArray)) {
+      const current = await promiseGet(array, index);
+
+      if (await promiseMod(current, 2)) {
+        sum = await promiseAdd(sum, current);
+      }
+      index = await promiseAdd(index, 1);
+    }
+    callback(sum);
+  }
+
+  window.sumOdd = sumOddAsync;
+
+</script>
