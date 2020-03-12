@@ -1,6 +1,6 @@
 Promise._any = array => {
   const result = [];
-  let counter = 0; ы
+  let counter = 0;
 
   return new Promise((resolve, _) => {
     array.forEach((prom, i) => prom
